@@ -57,8 +57,8 @@ backend/*.class
 
 # ── Python / AI Worker ─────────────────────────
 worker/venv/
-worker/__pycache__/
-worker/*.pyc
+**/__pycache__/
+*.pyc
 worker/.mypy_cache/
 *.egg-info/
 
