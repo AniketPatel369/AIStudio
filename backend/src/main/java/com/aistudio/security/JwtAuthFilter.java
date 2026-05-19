@@ -42,8 +42,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (token != null && jwtUtils.validateToken(token)) {
             var claims = jwtUtils.getClaimsFromToken(token);
-            String email = claims.getSubject();
-            if (email == null) email = claims.get("email", String.class);
+            String rawEmail = claims.getSubject();
+            if (rawEmail == null) rawEmail = claims.get("email", String.class);
+            final String email = rawEmail;
 
             if (email != null) {
                 User user = userRepository.findByEmail(email).orElseGet(() -> {

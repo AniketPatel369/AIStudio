@@ -50,6 +50,10 @@ public class JwtUtils {
                 .getPayload();
     }
 
+    public String getEmailFromToken(String token) {
+        return getClaimsFromToken(token).getSubject();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
