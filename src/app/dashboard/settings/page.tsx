@@ -8,10 +8,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSession } from "next-auth/react";
 
 export default function SettingsPage() {
+  const { data: session } = useSession();
+  const user = session?.user;
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
@@ -41,8 +44,9 @@ export default function SettingsPage() {
             {/* Avatar */}
             <div className="flex items-center gap-4">
               <Avatar className="h-16 w-16 border-2 border-border">
+                <AvatarImage src={user?.image || ""} />
                 <AvatarFallback className="bg-gradient-to-br from-indigo to-violet text-white text-xl font-bold">
-                  U
+                  {user?.name?.[0]?.toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -60,14 +64,14 @@ export default function SettingsPage() {
               <div>
                 <Label className="text-xs text-muted-foreground">Name</Label>
                 <Input
-                  defaultValue="User"
+                  defaultValue={user?.name || "User"}
                   className="mt-1.5 rounded-xl bg-secondary border-border"
                 />
               </div>
               <div>
                 <Label className="text-xs text-muted-foreground">Email</Label>
                 <Input
-                  defaultValue="user@example.com"
+                  defaultValue={user?.email || "user@example.com"}
                   disabled
                   className="mt-1.5 rounded-xl bg-secondary border-border opacity-60"
                 />

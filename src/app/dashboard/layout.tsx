@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
+import api from "@/services/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -37,6 +39,13 @@ export default function DashboardLayout({
   const { data: session } = useSession();
   const user = session?.user;
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Sync user with backend
+  useEffect(() => {
+    if (session?.user) {
+      api.get('/user/profile').catch(console.error);
+    }
+  }, [session]);
 
   return (
     <div className="min-h-screen flex">
