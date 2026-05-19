@@ -41,9 +41,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = extractToken(request);
 
         if (token != null && jwtUtils.validateToken(token)) {
-            String email = jwtUtils.getEmailFromToken(token);
+            var claims = jwtUtils.getClaimsFromToken(token);
+            String email = claims.getSubject();
+            if (email == null) email = claims.get("email", String.class);
 
-            userRepository.findByEmail(email).ifPresent(user -> {
+            if (email != null) {
+                User user = userRepository.findByEmail(email).orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setEmail(email);
+                    String name = claims.get("name", String.class);
+                    newUser.setName(name != null ? name : email.split("@")[0]);
+                    newUser.setAvatar(claims.get("picture", String.class));
+                    newUser.setAuthProvider("google");
+                    newUser.setRole(User.Role.USER);
+                    newUser.setStatus(User.Status.ACTIVE);
+                    return userRepository.save(newUser);
+                });
+
                 if (user.getStatus() == User.Status.ACTIVE) {
                     var authorities = List.of(
                             new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
@@ -54,7 +68,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }
-            });
+            }
         }
 
         filterChain.doFilter(request, response);

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
@@ -15,7 +16,7 @@ import {
   Shield,
   ChevronRight,
 } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const user = session?.user;
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -97,19 +100,21 @@ export default function DashboardLayout({
             <Separator className="mb-4 bg-border" />
             <div className="flex items-center gap-3 p-2">
               <Avatar className="h-9 w-9 border border-border">
+                <AvatarImage src={user?.image || ""} />
                 <AvatarFallback className="bg-gradient-to-br from-indigo to-violet text-white text-xs font-semibold">
-                  U
+                  {user?.name?.[0]?.toUpperCase() || "U"}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">User</p>
+                <p className="text-sm font-medium truncate">{user?.name || "User"}</p>
                 <p className="text-xs text-muted-foreground truncate">
-                  user@example.com
+                  {user?.email || "Loading..."}
                 </p>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
+                onClick={() => signOut({ callbackUrl: "/" })}
                 className="h-8 w-8 text-muted-foreground hover:text-foreground"
               >
                 <LogOut className="h-4 w-4" />
