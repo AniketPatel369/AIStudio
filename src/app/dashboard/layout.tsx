@@ -166,7 +166,7 @@ export default function DashboardLayout({
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-[#111827] border-r border-border p-4"
+              className="lg:hidden fixed inset-y-0 left-0 z-50 w-64 bg-[#111827] border-r border-border p-4 flex flex-col"
             >
               <nav className="mt-14 space-y-1">
                 {sidebarLinks.map((link) => {
@@ -189,6 +189,33 @@ export default function DashboardLayout({
                   );
                 })}
               </nav>
+
+              {/* Mobile User Section */}
+              <div className="mt-auto">
+                <Separator className="mb-4 bg-border" />
+                <div className="flex items-center gap-3 p-2">
+                  <Avatar className="h-9 w-9 border border-border">
+                    <AvatarImage src={user?.image || ""} />
+                    <AvatarFallback className="bg-gradient-to-br from-indigo to-violet text-white text-xs font-semibold">
+                      {user?.name?.[0]?.toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{user?.name || "User"}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {user?.email || "Loading..."}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="h-8 w-8 text-muted-foreground hover:text-foreground"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
             </motion.div>
           </>
         )}

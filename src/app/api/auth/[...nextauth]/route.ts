@@ -66,6 +66,19 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name as string;
         session.user.image = token.picture as string;
       }
+      const secret = process.env.NEXTAUTH_SECRET || "dev-secret-change-in-production";
+      (session as any).accessToken = jwt.sign(
+        {
+          sub: token.email,
+          name: token.name,
+          picture: token.picture,
+          email: token.email,
+          iat: token.iat || Math.floor(Date.now() / 1000),
+          exp: token.exp || (Math.floor(Date.now() / 1000) + 24 * 60 * 60),
+        },
+        secret,
+        { algorithm: "HS256" }
+      );
       return session;
     },
   },
