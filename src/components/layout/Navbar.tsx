@@ -78,7 +78,7 @@ export default function Navbar() {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+              className="md:hidden block p-2 text-muted-foreground hover:text-foreground"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
@@ -99,7 +99,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-16 z-40 glass-strong md:hidden"
+            className="fixed inset-x-0 bottom-0 top-16 z-40 glass-strong md:hidden"
           >
             <div className="px-6 py-4 space-y-2">
               {NAV_LINKS.map((link) => (
