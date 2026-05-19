@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════
+# AIStudio Backend — Application Configuration
+# ═══════════════════════════════════════════════
+
+spring:
+  application:
+    name: aistudio-backend
+
+  # ── Database ────────────────────────────────
+  datasource:
+    url: jdbc:mysql://localhost:3306/aistudio?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+
+  # ── Redis ───────────────────────────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+  # ── File Upload ─────────────────────────────
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+
+# ── Server ──────────────────────────────────
+server:
+  port: 8080
+
+# ── JWT / Supabase ──────────────────────────
+aistudio:
+  jwt:
+    secret: ${JWT_SECRET:your-super-secret-jwt-key-change-in-production}
+    expiration: 86400000  # 24 hours
+
+  supabase:
+    url: ${SUPABASE_URL:}
+    anon-key: ${SUPABASE_ANON_KEY:}
+    jwt-secret: ${SUPABASE_JWT_SECRET:}
+
+  # ── Generation Limits ─────────────────────
+  limits:
+    free-daily: 3
+    max-variants: 4
+    max-file-size: 10485760  # 10MB
+
+  # ── Storage Paths ─────────────────────────
+  storage:
+    base-path: ${STORAGE_PATH:./storage}
+    uploads: uploads
+    generated: generated
+    upscaled: upscaled
+    thumbnails: thumbnails
+
+  # ── CORS ──────────────────────────────────
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:3000,http://localhost:3001}
+
+# ── Logging ─────────────────────────────────
+logging:
+  level:
+    com.aistudio: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: WARN
