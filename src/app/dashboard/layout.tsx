@@ -1,6 +1,4 @@
 "use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -71,11 +69,10 @@ export default function DashboardLayout({
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                    isActive
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
                       ? "bg-indigo/15 text-indigo border border-indigo/20"
                       : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                  }`}
+                    }`}
                 >
                   <Icon className="h-4 w-4" />
                   {link.label}
@@ -93,11 +90,10 @@ export default function DashboardLayout({
             {/* Admin link */}
             <Link
               href="/dashboard/admin"
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                pathname === "/dashboard/admin"
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${pathname === "/dashboard/admin"
                   ? "bg-indigo/15 text-indigo border border-indigo/20"
                   : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-              }`}
+                }`}
             >
               <Shield className="h-4 w-4" />
               Admin Panel
@@ -181,11 +177,10 @@ export default function DashboardLayout({
                       key={link.href}
                       href={link.href}
                       onClick={() => setSidebarOpen(false)}
-                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                        isActive
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${isActive
                           ? "bg-indigo/15 text-indigo"
                           : "text-muted-foreground hover:text-foreground hover:bg-white/5"
-                      }`}
+                        }`}
                     >
                       <Icon className="h-4 w-4" />
                       {link.label}
