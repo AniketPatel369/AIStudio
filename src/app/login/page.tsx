@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
   const handleGoogleLogin = () => {
-    // TODO: Implement Supabase Google Auth
-    console.log("Google login");
+    signIn("google", { callbackUrl: "/dashboard" });
   };
 
   return (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { Toaster } from "sonner";
 import LenisProvider from "@/components/providers/LenisProvider";
+import AuthProvider from "@/components/providers/AuthProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -63,9 +64,11 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <LenisProvider>
-          {children}
-        </LenisProvider>
+        <AuthProvider>
+          <LenisProvider>
+            {children}
+          </LenisProvider>
+        </AuthProvider>
         <Toaster
           position="top-right"
           richColors

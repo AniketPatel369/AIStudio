@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getSession } from "next-auth/react";
 import { API_BASE_URL } from "@/constants";
 
 const api = axios.create({
@@ -9,13 +10,19 @@ const api = axios.create({
   timeout: 30000,
 });
 
-// Request interceptor - attach JWT token
+// Request interceptor - attach JWT token from NextAuth session
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     if (typeof window !== "undefined") {
-      const token = localStorage.getItem("access_token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      const session = await getSession();
+      if (session) {
+        // NextAuth stores the JWT in the session cookie;
+        // we fetch it from the session token endpoint
+        const res = await fetch("/api/auth/session");
+        const data = await res.json();
+        if (data?.accessToken) {
+          config.headers.Authorization = `Bearer ${data.accessToken}`;
+        }
       }
     }
     return config;
@@ -28,9 +35,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
       if (typeof window !== "undefined") {
-        localStorage.removeItem("access_token");
         window.location.href = "/login";
       }
     }

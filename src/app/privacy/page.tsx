@@ -23,7 +23,7 @@ export default function PrivacyPage() {
             <p>Uploaded product images are processed through AI models for generation purposes. We do not sell or share your images with third parties. Generated images are stored securely and accessible only to you.</p>
 
             <h2 className="text-foreground font-[family-name:var(--font-space-grotesk)] text-xl font-semibold mt-8">4. Data Security</h2>
-            <p>We implement industry-standard security measures including encryption, secure authentication via Supabase, and regular security audits to protect your data.</p>
+            <p>We implement industry-standard security measures including encryption, secure OAuth authentication, and regular security audits to protect your data.</p>
 
             <h2 className="text-foreground font-[family-name:var(--font-space-grotesk)] text-xl font-semibold mt-8">5. Contact</h2>
             <p>For privacy-related inquiries, please contact us at privacy@aistudio.com.</p>
